@@ -72,7 +72,7 @@
 <body>
     <h1>Список новостей</h1>
     <ul>
-        {% for item in news %}
+        {% for item in news_list %}
             <li>
                 <a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a>
                 ({{ item.created_at }})
