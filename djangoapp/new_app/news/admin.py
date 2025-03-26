@@ -20,16 +20,15 @@ from django.contrib import admin
 from django.contrib import admin
 from .models import News, Comment
 
-class CommentInline(admin.TabularInline):  # Используем TabularInline для комментариев
+class CommentInline(admin.TabularInline):
     model = Comment
-    extra = 5  # Покажет 5 пустых полей для комментариев
-    readonly_fields = ('created_at',)  # Сделаем created_at только для чтения
-    exclude = ('created_at',)  # Полностью исключаем его из формы
+    extra = 5
+    readonly_fields = ('created_at',)
+    exclude = ('created_at',)
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'content', 'created_at', 'has_comments')  # Отображаемые поля
-    inlines = [CommentInline]  # Добавляем комментарии как inline
-
+    list_display = ('title', 'content', 'created_at', 'has_comments')
+    inlines = [CommentInline]
 admin.site.register(News, NewsAdmin)
 
 
