@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить новость</title>
+    <title>Добавить комментарий</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -11,7 +11,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #1d2671, #c33764);
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
             margin: 0;
         }
         .container {
@@ -33,7 +33,7 @@
             margin-top: 20px;
         }
         .submit-button {
-            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
             color: white;
             border: none;
             padding: 14px 30px;
@@ -56,11 +56,11 @@
 <body>
     <div class="container">
         {% if user.is_authenticated %}
-            <h2>Добавить новость</h2>
+            <h2>Добавить комментарий</h2>
             <form method="POST" class="form-container">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="submit-button">Добавить новость</button>
+                <button type="submit" class="submit-button">Отправить</button>
             </form>
         {% else %}
             <p class="message">Доступно только для авторизованных пользователей.</p>
