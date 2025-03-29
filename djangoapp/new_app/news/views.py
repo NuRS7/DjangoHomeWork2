@@ -1,3 +1,8 @@
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from .serizalizers import NewsSerializer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -31,7 +36,6 @@ class NewsCreateView(LoginRequiredMixin, View):
             news.save()
             return redirect('news_detail', pk=news.pk)
         return render(request, 'news/news_form.html', {'form': form})
-
 
 
 # class NewsCreateView(View):
@@ -70,6 +74,7 @@ class NewsDetailView(View):
             return redirect('news_detail', pk=pk)
 
         return redirect('news_detail', pk=pk)
+
 
 class NewsUpdateView(View):
     def get(self, request, pk):
@@ -158,3 +163,31 @@ class CommentDeleteView(View):
         if comment.author_comment == request.user.username:
             comment.delete()
         return redirect('news_detail', pk=comment.news.pk)
+
+
+
+class NewsCreateAPIView(APIView):
+    def post(self, request):
+        serializer = NewsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class NewsDetailAPIView(APIView):
+    def get(self, request, pk):
+        news_item = get_object_or_404(News, pk=pk)
+        serializer = NewsSerializer(news_item)
+        return Response(serializer.data)
+
+class NewsDeleteAPIView(APIView):
+    def delete(self, request, pk):
+        news_item = get_object_or_404(News, pk=pk)
+        news_item.delete()
+        return Response({"message": "Новость удалена"}, status=status.HTTP_204_NO_CONTENT)
+
+class NewsListAPIView(APIView):
+    def get(self, request):
+        news_items = News.objects.all().order_by('-created_at')
+        serializer = NewsSerializer(news_items, many=True)
+        return Response(serializer.data)
